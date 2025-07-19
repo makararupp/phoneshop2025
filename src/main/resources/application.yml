@@ -1,0 +1,30 @@
+
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/phoneshop
+        username: phoneshop
+        password: phoneshop123
+    
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+    servlet:
+        context-path: /api/v1/
+
+#configure application with api document swagger ui version 3.0.6
+springdoc:
+    swagger-ui:
+        enabled: true                 # Enable Swagger UI
+        path: /swagger-ui             # Custom path (default: /swagger-ui.html)
+        displayOperationId: true      # Show operation IDs
+        displayRequestDuration: true  # Show request duration
+
+logging:
+    level:
+        org.springframework.security: DEBUG
+        com.example: INFO
+
