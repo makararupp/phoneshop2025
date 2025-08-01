@@ -31,4 +31,17 @@ public class CustomerServiceImpl implements CustomerService{
         Customer delete = customerRepository.save(customer);
         return delete;
     }
+    @Override
+    public Customer update(Long id, Customer newCustomer) {
+        return customerRepository.findByIdAndIsDeletedFalse(id)
+                .map(existingCustomer  ->{
+                    existingCustomer.setCustomerLocalName(newCustomer.getCustomerLocalName());
+                    existingCustomer.setCustomerEngName(newCustomer.getCustomerEngName());
+                    existingCustomer.setCustomerEmail(newCustomer.getCustomerEmail());
+                    existingCustomer.setCustomerPhone(newCustomer.getCustomerPhone());
+                    existingCustomer.setCustomerAddress(newCustomer.getCustomerAddress());
+                    return customerRepository.save(existingCustomer);
+                })
+                .orElseThrow(()-> new ResourceNotFountException("Customer not found:", id));
+    }
 }

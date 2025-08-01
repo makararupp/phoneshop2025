@@ -8,18 +8,11 @@ import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -66,7 +59,20 @@ public class CustomerController {
                 .timestamp(LocalDateTime.now())
                 .data(null)
                 .build();
-    }    
+    }
+    @PutMapping("/{id}")
+    public BaseApi<?> updateCustomer(@Valid @PathVariable("id")Long id,
+                                     @RequestBody CustomerRequest request){
+        Customer customer = customerMapper.toEntity(request);
+        Customer newCus = customerService.update(id, customer);
+        CustomerResponse responseUpdate = customerMapper.toDto(newCus);
 
-    
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("customer has been updated")
+                .timestamp(LocalDateTime.now())
+                .data(responseUpdate)
+                .build();
+    }
 }
