@@ -2,16 +2,22 @@ package com.makara.phoneshop.service.impl;
 
 import com.makara.phoneshop.exception.ResourceNotFountException;
 import com.makara.phoneshop.models.entities.Customer;
+import com.makara.phoneshop.models.mapper.CustomerMapper;
+import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.repository.CustomerRepository;
 import com.makara.phoneshop.service.CustomerService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
 
     @Override
     public Customer create(Customer customer) {
@@ -43,5 +49,13 @@ public class CustomerServiceImpl implements CustomerService{
                     return customerRepository.save(existingCustomer);
                 })
                 .orElseThrow(()-> new ResourceNotFountException("Customer not found:", id));
+    }
+
+    @Override
+    public List<CustomerResponse> findAll() {
+        return customerRepository.findByIsDeletedIsFalseOrderByIdDesc()
+                .stream()
+                .map(customerMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

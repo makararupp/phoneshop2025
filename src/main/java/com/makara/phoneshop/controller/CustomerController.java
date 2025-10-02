@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -75,4 +76,16 @@ public class CustomerController {
                 .data(responseUpdate)
                 .build();
     }
+    @GetMapping
+    public BaseApi<?> getAllCustomer(){
+        List<CustomerResponse> list = customerService.findAll();
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("customer have been found")
+                .timestamp(LocalDateTime.now())
+                .data(list)
+                .build();
+    }
+
 }

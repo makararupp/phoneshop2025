@@ -94,7 +94,6 @@ public class ModelController {
                  .data(dtoList)
                  .build();
      }
-
      @GetMapping("/page")
     public BaseApi<?> getPagination(@Valid @RequestParam Map<String,String > params){
          Page<ModelDTO> page = service.getPagination(params);
