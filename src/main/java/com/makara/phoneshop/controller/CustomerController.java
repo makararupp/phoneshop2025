@@ -1,12 +1,14 @@
 package com.makara.phoneshop.controller;
 
 import com.makara.phoneshop.baseApi.BaseApi;
+import com.makara.phoneshop.dto.PageDTO;
 import com.makara.phoneshop.models.entities.Customer;
 import com.makara.phoneshop.models.mapper.CustomerMapper;
 import com.makara.phoneshop.models.request.CustomerRequest;
 import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.service.CustomerService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -87,5 +90,19 @@ public class CustomerController {
                 .data(list)
                 .build();
     }
+    @GetMapping("/pagination")
+    public BaseApi<?> getWithPagination(@RequestParam Map<String, String> params){
+        Page<CustomerResponse> page = customerService.findWithPagination(params);
+        PageDTO dto = new PageDTO(page);
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("customer pagination have been found")
+                .timestamp(LocalDateTime.now())
+                .data(dto)
+                .build();
+    }
+
 
 }

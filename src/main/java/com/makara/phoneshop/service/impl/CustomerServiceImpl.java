@@ -7,10 +7,14 @@ import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.repository.CustomerRepository;
 import com.makara.phoneshop.service.CustomerService;
 
+import com.makara.phoneshop.utils.PageUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,5 +61,25 @@ public class CustomerServiceImpl implements CustomerService{
                 .stream()
                 .map(customerMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<CustomerResponse> findWithPagination(Map<String, String> params) {
+        int pageLimit = PageUtils.DEFAULT_PAGE_LIMIT;
+        //check page limit
+        if(params.containsKey(PageUtils.PAGE_LIMIT)){
+            pageLimit = Integer.parseInt(params.get(PageUtils.PAGE_LIMIT));
+        }
+        //check  page number
+        int pageNumber = PageUtils.DEFAULT_PAGE_NUMBER;
+        if(params.containsKey(PageUtils.PAGE_NUMBER)){
+            pageNumber = Integer.parseInt(params.get(PageUtils.PAGE_NUMBER));
+        }
+        // Assuming this is inside a method like getCustomers(int pageNumber, int pageLimit)
+        Pageable pageable = PageUtils.getPageable(pageNumber,pageLimit);
+        Page<CustomerResponse> page = customerRepository
+                .findByIsDeletedIsFalseOrderByIdDesc(pageable)
+                .map(customerMapper::toDto);
+        return page;
     }
 }

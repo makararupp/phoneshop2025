@@ -118,8 +118,6 @@ public class ModelController {
                  .timestamp(LocalDateTime.now())
                  .data(models)
                  .build();
-
      }
-     
 
 }

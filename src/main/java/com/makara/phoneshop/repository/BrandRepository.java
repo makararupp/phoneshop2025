@@ -11,7 +11,8 @@ import com.makara.phoneshop.models.entities.Brand;
 import java.util.List;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Long>, JpaSpecificationExecutor<Brand>{
+public interface BrandRepository extends JpaRepository<Brand, Long>,
+        JpaSpecificationExecutor<Brand>{
     List<Brand> findByNameContainingIgnoreCase(String name);
     Page<Brand> findAllByOrderByIdDesc(Pageable pageable);
 
