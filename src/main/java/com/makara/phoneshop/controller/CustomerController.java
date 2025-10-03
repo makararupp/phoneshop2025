@@ -103,6 +103,15 @@ public class CustomerController {
                 .data(dto)
                 .build();
     }
-
-
+    @GetMapping("specFitter")
+    public BaseApi<?> getAll(@RequestParam Map<String, String > params){
+        List<CustomerResponse> list = customerService.getAll(params);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("customer specification fitter have been found")
+                .timestamp(LocalDateTime.now())
+                .data(list)
+                .build();
+    }
 }

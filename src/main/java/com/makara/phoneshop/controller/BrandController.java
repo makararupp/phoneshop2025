@@ -125,6 +125,4 @@ public class BrandController {
                 .data(pageDTO)
                 .build();
     }
-
-
 }

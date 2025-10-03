@@ -7,10 +7,12 @@ import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.repository.CustomerRepository;
 import com.makara.phoneshop.service.CustomerService;
 
+import com.makara.phoneshop.spec.CustomerSpecification;
 import com.makara.phoneshop.utils.PageUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,5 +83,13 @@ public class CustomerServiceImpl implements CustomerService{
                 .findByIsDeletedIsFalseOrderByIdDesc(pageable)
                 .map(customerMapper::toDto);
         return page;
+    }
+
+    @Override
+    public List<CustomerResponse> getAll(Map<String, String> params) {
+        Specification<Customer> specification = CustomerSpecification.buildSpecification(params);
+
+        return customerRepository.findAll(specification).stream().map(customerMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
