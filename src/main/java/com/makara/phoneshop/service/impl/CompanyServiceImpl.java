@@ -1,5 +1,6 @@
 package com.makara.phoneshop.service.impl;
 
+import com.makara.phoneshop.exception.ResourceNotFountException;
 import com.makara.phoneshop.models.entities.Company;
 import com.makara.phoneshop.repository.CompanyRepository;
 import com.makara.phoneshop.service.CompanyService;
@@ -14,5 +15,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company save(Company company) {
         return companyRepository.save(company);
+    }
+
+    @Override
+    public Company getId(Long id) {
+            return companyRepository.findById(id)
+                    .orElseThrow(()-> new ResourceNotFountException("Company",id));
     }
 }

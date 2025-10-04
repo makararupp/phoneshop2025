@@ -10,25 +10,37 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("companies")
-@RequiredArgsConstructor
 public class CompanyController {
-    private final CompanyService companyService;
-    private final CompanyMapper companyMapper;
+    @Autowired
+    private CompanyService companyService;
+    @Autowired
+    private   CompanyMapper companyMapper;
 
     @PostMapping
     public BaseApi<?> crateCompany(@Valid @RequestBody CompanyRequest request){
         Company company = companyMapper.toDTO(request);
         Company save = companyService.save(company);
         CompanyResponse response = companyMapper.toEntity(save);
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("company have been saved")
+                .data(response)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    public BaseApi<?> getCompanyId(@PathVariable("id") Long companyId){
+         Company company = companyService.getId(companyId);
+         CompanyResponse response = companyMapper.toEntity(company);
 
         return BaseApi.builder()
                 .status(true)
