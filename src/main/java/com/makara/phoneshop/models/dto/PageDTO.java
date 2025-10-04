@@ -1,4 +1,4 @@
-package com.makara.phoneshop.dto;
+package com.makara.phoneshop.models.dto;
 
 import lombok.Data;
 import org.springframework.data.domain.Page;

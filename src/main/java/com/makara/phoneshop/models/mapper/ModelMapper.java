@@ -1,6 +1,6 @@
 package com.makara.phoneshop.models.mapper;
 
-import com.makara.phoneshop.dto.ModelDTO;
+import com.makara.phoneshop.models.dto.ModelDTO;
 import com.makara.phoneshop.models.entities.Model;
 import com.makara.phoneshop.service.BrandService;
 import org.mapstruct.Mapper;

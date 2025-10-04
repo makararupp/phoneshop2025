@@ -1,6 +1,6 @@
 package com.makara.phoneshop.service.impl;
 
-import com.makara.phoneshop.dto.BrandDTO;
+import com.makara.phoneshop.models.dto.BrandDTO;
 import com.makara.phoneshop.exception.ResourceNotFountException;
 import com.makara.phoneshop.models.entities.Brand;
 import com.makara.phoneshop.models.mapper.BrandMapper;

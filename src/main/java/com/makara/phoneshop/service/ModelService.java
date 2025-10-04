@@ -1,6 +1,6 @@
 package com.makara.phoneshop.service;
 
-import com.makara.phoneshop.dto.ModelDTO;
+import com.makara.phoneshop.models.dto.ModelDTO;
 import com.makara.phoneshop.models.entities.Model;
 
 import org.springframework.data.domain.Page;

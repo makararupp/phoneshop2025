@@ -1,4 +1,4 @@
-package com.makara.phoneshop.dto;
+package com.makara.phoneshop.models.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

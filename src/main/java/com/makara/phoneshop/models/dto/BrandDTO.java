@@ -1,4 +1,4 @@
-package com.makara.phoneshop.dto;
+package com.makara.phoneshop.models.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

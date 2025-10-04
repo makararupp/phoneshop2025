@@ -1,7 +1,7 @@
 package com.makara.phoneshop.controller;
 
 import com.makara.phoneshop.baseApi.BaseApi;
-import com.makara.phoneshop.dto.PageDTO;
+import com.makara.phoneshop.models.dto.PageDTO;
 import com.makara.phoneshop.models.entities.Customer;
 import com.makara.phoneshop.models.mapper.CustomerMapper;
 import com.makara.phoneshop.models.request.CustomerRequest;

@@ -1,4 +1,4 @@
-package com.makara.phoneshop.dto;
+package com.makara.phoneshop.models.dto;
 
 import lombok.Builder;
 import lombok.Data;
