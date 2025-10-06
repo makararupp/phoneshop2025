@@ -13,5 +13,7 @@ public class Brand {
     private Long id;
     @Column(name = "brand_name")
     private String name;
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isDeleted = false;
 
 }

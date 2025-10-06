@@ -19,7 +19,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getId(Long id) {
-            return companyRepository.findById(id)
+            return companyRepository.findByIdAndIsDeletedFalse(id)
                     .orElseThrow(()-> new ResourceNotFountException("Company",id));
+    }
+
+    @Override
+    public Company deletedById(Long id) {
+       Company company = getId(id);
+       company.setIsDeleted(true);
+       Company save = companyRepository.save(company);
+
+       return save;
     }
 }

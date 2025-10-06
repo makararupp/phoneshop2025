@@ -7,7 +7,6 @@ import com.makara.phoneshop.models.request.CompanyRequest;
 import com.makara.phoneshop.models.response.CompanyResponse;
 import com.makara.phoneshop.service.CompanyService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +45,18 @@ public class CompanyController {
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("company have been saved")
+                .data(response)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+    @DeleteMapping("/{id}")
+    public BaseApi<?> deletedId(@PathVariable("id") Long id){
+        Company byId = companyService.deletedById(id);
+        CompanyResponse response = companyMapper.toEntity(byId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("company id has been deleted")
                 .data(response)
                 .timestamp(LocalDateTime.now())
                 .build();
