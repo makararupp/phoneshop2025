@@ -12,6 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("companies")
@@ -23,9 +28,9 @@ public class CompanyController {
 
     @PostMapping
     public BaseApi<?> crateCompany(@Valid @RequestBody CompanyRequest request){
-        Company company = companyMapper.toDTO(request);
+        Company company = companyMapper.toEntity(request);
         Company save = companyService.save(company);
-        CompanyResponse response = companyMapper.toEntity(save);
+        CompanyResponse response = companyMapper.toDTO(save);
 
         return BaseApi.builder()
                 .status(true)
@@ -39,7 +44,7 @@ public class CompanyController {
     @GetMapping("/{id}")
     public BaseApi<?> getCompanyId(@PathVariable("id") Long companyId){
          Company company = companyService.getId(companyId);
-         CompanyResponse response = companyMapper.toEntity(company);
+         CompanyResponse response = companyMapper.toDTO(company);
 
         return BaseApi.builder()
                 .status(true)
@@ -49,10 +54,22 @@ public class CompanyController {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+    @GetMapping
+    public BaseApi<?> getAllCompany(){
+        List<CompanyResponse> compnies = companyService.getAll() ;
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list of company")
+                .data(compnies)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }   
+
     @DeleteMapping("/{id}")
     public BaseApi<?> deletedId(@PathVariable("id") Long id){
         Company byId = companyService.deletedById(id);
-        CompanyResponse response = companyMapper.toEntity(byId);
+        CompanyResponse response = companyMapper.toDTO(byId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

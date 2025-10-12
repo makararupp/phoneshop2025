@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CompanyMapper {
-    Company toDTO(CompanyRequest request);
-    CompanyResponse toEntity(Company company);
+    Company toEntity(CompanyRequest request);
+    CompanyResponse toDTO(Company company);
 }
