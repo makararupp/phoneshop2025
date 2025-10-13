@@ -30,16 +30,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getId(Long id) {
-            return companyRepository.findByIdAndIsDeletedFalse(id)
-                    .orElseThrow(()-> new ResourceNotFountException("Company",id));
+        return companyRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFountException("Company", id));
     }
 
     @Override
     public Company deletedById(Long id) {
-       Company company = getId(id);
-       company.setIsDeleted(true);
-       Company save = companyRepository.save(company);
-       return save;
+        Company company = getId(id);
+        company.setIsDeleted(true);
+        Company save = companyRepository.save(company);
+        return save;
     }
 
     @Override
@@ -48,5 +48,19 @@ public class CompanyServiceImpl implements CompanyService {
                 .stream()
                 .map(companyMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Company update(Long id, Company newCompany) {
+        Company company = getId(id);
+        company.setCompanyLocalName(newCompany.getCompanyLocalName());
+        company.setCompanyEngName(newCompany.getCompanyEngName());
+        company.setCompanyEmail(newCompany.getCompanyEmail());
+        company.setCompanyPhone(newCompany.getCompanyPhone());
+        company.setCompanyAddress(newCompany.getCompanyAddress());
+        company.setVatNumber(newCompany.getVatNumber());
+        company.setImagePath(newCompany.getImagePath());
+        company.setImage(newCompany.getImage());
+        return companyRepository.save(company);
     }
 }

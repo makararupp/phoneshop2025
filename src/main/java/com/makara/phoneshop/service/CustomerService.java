@@ -4,7 +4,6 @@ package com.makara.phoneshop.service;
 import com.makara.phoneshop.models.entities.Customer;
 import com.makara.phoneshop.models.response.CustomerResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Map;

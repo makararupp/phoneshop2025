@@ -89,7 +89,7 @@ public class BrandController {
                 .build();
     }
 
-    @GetMapping("list-all")
+    @GetMapping("listAll")
     public BaseApi<?> listAllBrand(){
        List<BrandDTO> list= brandService.listAll();
         return BaseApi.builder()
