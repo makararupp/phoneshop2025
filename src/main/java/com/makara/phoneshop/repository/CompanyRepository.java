@@ -1,6 +1,9 @@
 package com.makara.phoneshop.repository;
 
 import com.makara.phoneshop.models.entities.Company;
+import com.makara.phoneshop.models.response.CompanyResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +15,5 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
       Optional<Company> findByIdAndIsDeletedFalse(Long id);
       List<Company> findByIsDeletedIsFalseOrderByIdDesc();
+      Page<Company> findByIsDeletedIsFalseOrderByIdDesc(Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.makara.phoneshop.controller;
 
 import com.makara.phoneshop.baseApi.BaseApi;
+import com.makara.phoneshop.models.dto.PageDTO;
 import com.makara.phoneshop.models.entities.Company;
 import com.makara.phoneshop.models.mapper.CompanyMapper;
 import com.makara.phoneshop.models.request.CompanyRequest;
@@ -8,14 +9,16 @@ import com.makara.phoneshop.models.response.CompanyResponse;
 import com.makara.phoneshop.service.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,6 +98,19 @@ public class CompanyController {
                 .message("companies has been updated!")
                 .timestamp(LocalDateTime.now())
                 .data(response)
+                .build();
+    }
+    @GetMapping("pagination")
+    public BaseApi<?> getPagination(@RequestParam Map<String,String> params){
+        Page<CompanyResponse> responsePage = companyService.findWithPagination(params);
+        PageDTO pageDTO = new PageDTO(responsePage);
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("companies get the specification")
+                .timestamp(LocalDateTime.now())
+                .data(pageDTO)
                 .build();
     }
 

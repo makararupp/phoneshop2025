@@ -3,16 +3,20 @@ package com.makara.phoneshop.service.impl;
 import com.makara.phoneshop.exception.ResourceNotFountException;
 import com.makara.phoneshop.models.entities.Company;
 import com.makara.phoneshop.models.mapper.CompanyMapper;
+import com.makara.phoneshop.models.request.CustomerRequest;
 import com.makara.phoneshop.models.response.CompanyResponse;
+import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.repository.CompanyRepository;
 import com.makara.phoneshop.service.CompanyService;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.makara.phoneshop.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,5 +66,24 @@ public class CompanyServiceImpl implements CompanyService {
         company.setImagePath(newCompany.getImagePath());
         company.setImage(newCompany.getImage());
         return companyRepository.save(company);
+    }
+
+    @Override
+    public Page<CompanyResponse> findWithPagination(Map<String, String> params) {
+        //Check page Limit:
+        int pageLimit = PageUtils.DEFAULT_PAGE_LIMIT;
+        if(params.containsKey(PageUtils.PAGE_LIMIT)){
+            pageLimit = Integer.parseInt(params.get(PageUtils.PAGE_LIMIT));
+        }
+        //Check page numbers:
+        int pageNumber = PageUtils.DEFAULT_PAGE_NUMBER;
+        if(params.containsKey(PageUtils.PAGE_NUMBER)){
+            pageNumber = Integer.parseInt(params.get(PageUtils.PAGE_NUMBER));
+        }
+        // Assuming this is inside a method like getCompanies(int pageNumber, int pageLimit)
+        Pageable pageable = PageUtils.getPageable(pageNumber,pageLimit);
+        Page<CompanyResponse> page = companyRepository.findByIsDeletedIsFalseOrderByIdDesc(pageable)
+                .map(companyMapper::toDTO);
+        return page;
     }
 }
