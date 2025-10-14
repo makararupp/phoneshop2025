@@ -1,31 +1,48 @@
 package com.makara.phoneshop.service.impl;
 
+import com.makara.phoneshop.controller.BrandController;
 import com.makara.phoneshop.exception.ResourceNotFountException;
 import com.makara.phoneshop.models.entities.Company;
 import com.makara.phoneshop.models.mapper.CompanyMapper;
-import com.makara.phoneshop.models.request.CustomerRequest;
 import com.makara.phoneshop.models.response.CompanyResponse;
-import com.makara.phoneshop.models.response.CustomerResponse;
 import com.makara.phoneshop.repository.CompanyRepository;
 import com.makara.phoneshop.service.CompanyService;
+import com.makara.phoneshop.service.GenerateFileService;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.makara.phoneshop.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
+
+    private final BrandController brandController;
     @Autowired
     private CompanyRepository companyRepository;
 
     @Autowired
     private CompanyMapper companyMapper;
+
+    @Autowired
+    private GenerateFileService generateFileService;
+
+    @Value("${file.server-path}")
+    private String fileServerPath;
+
+
+    CompanyServiceImpl(BrandController brandController) {
+        this.brandController = brandController;
+    }
+
 
     @Override
     public Company save(Company company) {
@@ -86,4 +103,19 @@ public class CompanyServiceImpl implements CompanyService {
                 .map(companyMapper::toDTO);
         return page;
     }
+
+    @Override
+    public Company saveImage(Long id, MultipartFile file) throws Exception {
+        String newFileName = generateFileService.generateFile(file.getOriginalFilename());
+           //After change file it is make transfer image to file path.
+            String desinationPath = fileServerPath + newFileName;
+            file.transferTo(new File(desinationPath));
+
+            Company saveImageCompany = getId(id);
+            //save name path into db.
+            saveImageCompany.setImagePath(newFileName);
+
+        return companyRepository.save(saveImageCompany);
+    }
+
 }

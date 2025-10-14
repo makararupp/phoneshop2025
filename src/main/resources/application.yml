@@ -14,6 +14,9 @@ server:
     servlet:
         context-path: /api/v1/
 
+file:
+    server-path: D:\\POS_Noted\\images\\
+
 
 #configure application with api document swagger ui version 3.0.6
 springdoc:

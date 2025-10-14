@@ -12,16 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("companies")
@@ -100,8 +98,9 @@ public class CompanyController {
                 .data(response)
                 .build();
     }
+
     @GetMapping("pagination")
-    public BaseApi<?> getPagination(@RequestParam Map<String,String> params){
+    public BaseApi<?> getPagination(@RequestParam Map<String, String> params) {
         Page<CompanyResponse> responsePage = companyService.findWithPagination(params);
         PageDTO pageDTO = new PageDTO(responsePage);
 
@@ -111,6 +110,42 @@ public class CompanyController {
                 .message("companies get the specification")
                 .timestamp(LocalDateTime.now())
                 .data(pageDTO)
+                .build();
+    }
+
+    @PostMapping("image/{id}")
+    public BaseApi<?> uploadImagePath(@PathVariable Long id,
+            @RequestParam MultipartFile file)
+            throws Exception {
+        if (file.isEmpty()) {
+            return BaseApi.builder()
+                    .status(false)
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message("Please select a file to upload.")
+                    .timestamp(LocalDateTime.now())
+                    .build();
+        }
+        // if user upload from PDF EXCEL Can't to uploads.
+        if (!file.getContentType().startsWith("image")) {
+            return BaseApi.builder()
+                    .status(false)
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message("Please uploda an image files only.")
+                    .timestamp(LocalDateTime.now())
+                    .build();
+        }
+
+        // log.info("file saved",file);
+        Company saveImage = companyService.saveImage(id, file);
+        CompanyResponse response = companyMapper.toDTO(saveImage);
+
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("file have been uploaded!...")
+                .timestamp(LocalDateTime.now())
+                .data(response)
                 .build();
     }
 
