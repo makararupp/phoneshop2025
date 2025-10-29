@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: phoneshop_db
+      POSTGRES_USER: phoneshop_user
+      POSTGRES_PASSWORD: secretpassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - phoneshop-network
+
+  # Your Spring Boot Application Service (using existing image)
+  phoneshop:
+    image: phoneshop # Use your existing image name and tag
+    container_name: phoneshop_app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/phoneshop_db
+      SPRING_DATASOURCE_USERNAME: phoneshop
+      SPRING_DATASOURCE_PASSWORD: phoneshop123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update  # Optional: for schema management
+    ports:
+      - "8080:8080"
+    networks:
+      - phoneshop-network
+
+  # PostgreSQL Web Administration Tool
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - phoneshop-network
+# Define volumes and network
+volumes:
+  postgres_data:
+networks:
+  phoneshop-network:
+    driver: bridge

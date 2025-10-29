@@ -18,6 +18,4 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
      List<Customer> findByIsDeletedIsFalseOrderByIdDesc();
      Page<Customer> findByIsDeletedIsFalseOrderByIdDesc(Pageable page);
      //List<Customer> findByNameContainingIgnoreCase(String name);
-
-
 }

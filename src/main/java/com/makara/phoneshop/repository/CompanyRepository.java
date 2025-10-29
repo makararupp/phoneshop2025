@@ -1,7 +1,6 @@
 package com.makara.phoneshop.repository;
 
 import com.makara.phoneshop.models.entities.Company;
-import com.makara.phoneshop.models.response.CompanyResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

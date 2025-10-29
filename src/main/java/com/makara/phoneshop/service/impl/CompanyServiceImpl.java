@@ -1,6 +1,5 @@
 package com.makara.phoneshop.service.impl;
 
-import com.makara.phoneshop.controller.BrandController;
 import com.makara.phoneshop.exception.ResourceNotFountException;
 import com.makara.phoneshop.models.entities.Company;
 import com.makara.phoneshop.models.mapper.CompanyMapper;
@@ -25,24 +24,16 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-    private final BrandController brandController;
     @Autowired
     private CompanyRepository companyRepository;
 
     @Autowired
     private CompanyMapper companyMapper;
-
     @Autowired
     private GenerateFileService generateFileService;
 
     @Value("${file.server-path}")
     private String fileServerPath;
-
-
-    CompanyServiceImpl(BrandController brandController) {
-        this.brandController = brandController;
-    }
-
 
     @Override
     public Company save(Company company) {
