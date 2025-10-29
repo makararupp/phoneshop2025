@@ -9,6 +9,8 @@ import com.makara.phoneshop.service.ColorService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,45 @@ public class ColorController {
                 .message("color have been found!")
                 .timestamp(LocalDateTime.now())
                 .data(response)
+                .build();
+    }
+    @DeleteMapping("{id}")
+    public BaseApi<?> deleteColorId(@PathVariable Long id){
+        Color color = colorService.deleteId(id);
+        ColorResponse delete = colorMapper.toDto(color);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("color has been deleted!")
+                .timestamp(LocalDateTime.now())
+                .data(delete)
+                .build();
+    }
+
+    @PutMapping("{id}")
+    public BaseApi<?> updateColor(@Valid @PathVariable Long id,
+                                  @RequestBody ColorRequest request){
+        Color color = colorMapper.toEntity(request);
+        Color newColor = colorService.updateColor(id, color);
+        ColorResponse response = colorMapper.toDto(newColor);
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("color has been updated!")
+                .timestamp(LocalDateTime.now())
+                .data(response)
+                .build();
+    }
+    @GetMapping
+    public BaseApi<List<ColorResponse>> getAllColors() {
+        List<ColorResponse> colorResponse = colorService.listColors();
+        return BaseApi.<List<ColorResponse>>builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("colors have been found")
+                .timestamp(LocalDateTime.now())
+                .data(colorResponse)
                 .build();
     }
 }

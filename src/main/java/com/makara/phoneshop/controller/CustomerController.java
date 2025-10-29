@@ -54,7 +54,7 @@ public class CustomerController {
                 .build(); 
     }
     @DeleteMapping("/{id}")
-    public BaseApi<?> delete(@Valid @PathVariable("id") Long id){
+    public BaseApi<?> delete(@PathVariable("id") Long id){
          customerService.deleteId(id);
          return BaseApi.builder()
                 .status(true)
@@ -65,7 +65,7 @@ public class CustomerController {
                 .build();
     }
     @PutMapping("/{id}")
-    public BaseApi<?> updateCustomer(@Valid @PathVariable("id")Long id,
+    public BaseApi<?> updateCustomer(@PathVariable("id")Long id,
                                      @RequestBody CustomerRequest request){
         Customer customer = customerMapper.toEntity(request);
         Customer newCus = customerService.update(id, customer);
