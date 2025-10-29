@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("colors")
@@ -36,6 +33,18 @@ public class ColorController {
                 .message("color has been saved!")
                 .timestamp(LocalDateTime.now())
                 .data(responseData)
+                .build();
+    }
+    @GetMapping("{id}")
+    public BaseApi<?> getByColorId(@PathVariable("id") Long colorId){
+        Color color = colorService.getById(colorId);
+        ColorResponse response = colorMapper.toDto(color);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("color have been found!")
+                .timestamp(LocalDateTime.now())
+                .data(response)
                 .build();
     }
 }

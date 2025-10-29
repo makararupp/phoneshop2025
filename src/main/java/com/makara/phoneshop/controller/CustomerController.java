@@ -41,7 +41,7 @@ public class CustomerController {
     }
     
     @GetMapping("/{id}")
-    public BaseApi<?> getCutomerId(@Valid @PathVariable("id") Long id) {
+    public BaseApi<?> getCutomerId(@PathVariable("id") Long id) {
         Customer customer = customerService.getById(id);
         CustomerResponse getCusid = customerMapper.toDto(customer);
 
