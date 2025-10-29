@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +58,14 @@ public class ColorServiceImpl implements ColorService {
     public List<ColorResponse> listColors() {
         return colorRepository.findByIsDeletedIsFalseOrderByIdDesc()
                 .stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ColorResponse> findByName(String name) {
+       Optional<Color> colors = colorRepository.findByNameIgnoreCase(name);
+        return colors.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }

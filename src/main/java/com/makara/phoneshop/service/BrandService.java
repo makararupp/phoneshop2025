@@ -13,7 +13,6 @@ public interface BrandService {
     Brand getById(Long Id);
     void deleteId(Long Id);
     Brand update(Long Id, Brand updateBrand);
-
     List<Brand> getBrands(String name);
     List<BrandDTO> listAll();
     Page<BrandDTO> getWithPagination(Map<String, String> params);

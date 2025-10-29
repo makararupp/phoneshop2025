@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ColorRepository extends JpaRepository<Color, Long> {
    Optional<Color> findByIdAndIsDeletedFalse(Long id);
    List<Color> findByIsDeletedIsFalseOrderByIdDesc();
+   Optional<Color> findByNameIgnoreCase(String name);
 }

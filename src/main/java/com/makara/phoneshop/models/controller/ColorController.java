@@ -1,4 +1,4 @@
-package com.makara.phoneshop.controller;
+package com.makara.phoneshop.models.controller;
 
 import com.makara.phoneshop.baseApi.BaseApi;
 import com.makara.phoneshop.models.entities.Color;
@@ -78,7 +78,7 @@ public class ColorController {
                 .build();
     }
     @GetMapping
-    public BaseApi<List<ColorResponse>> getAllColors() {
+    public BaseApi<List<ColorResponse>> getAllColors(){
         List<ColorResponse> colorResponse = colorService.listColors();
         return BaseApi.<List<ColorResponse>>builder()
                 .status(true)
@@ -86,6 +86,17 @@ public class ColorController {
                 .message("colors have been found")
                 .timestamp(LocalDateTime.now())
                 .data(colorResponse)
+                .build();
+    }
+    @GetMapping("filter/{name}")
+    public BaseApi<?> filterName(@PathVariable("name") String name){
+       List<ColorResponse> responseName = colorService.findByName(name);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("color filter by name has been found!")
+                .timestamp(LocalDateTime.now())
+                .data(responseName)
                 .build();
     }
 }

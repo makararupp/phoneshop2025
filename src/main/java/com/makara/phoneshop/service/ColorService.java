@@ -11,4 +11,5 @@ public interface ColorService {
     Color deleteId(Long id);
     Color updateColor(Long id, Color newColor);
     List<ColorResponse> listColors();
+    List<ColorResponse> findByName(String name);
 }
