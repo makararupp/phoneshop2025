@@ -17,4 +17,5 @@ public interface ModelService{
     Page<ModelDTO> getPagination(Map<String, String> params);
 
     List<Model> filterSpecification(String name);
+    List<Model> getByBrand(Long brandId);
 }

@@ -17,5 +17,7 @@ public interface ModelRepository extends JpaRepository<Model,Long> ,JpaSpecifica
     List<Model> findByIsDeletedIsFalseOrderByIdDesc();
     Page<Model> findByIsDeletedIsFalseOrderByIdDesc(Pageable page);
     List<Model> findByNameContainingIgnoreCase(String name);
+
+    List<Model> findByBrandId(Long brandId);
     
 }

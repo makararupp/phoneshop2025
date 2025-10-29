@@ -1,4 +1,4 @@
-package com.makara.phoneshop.models.controller;
+package com.makara.phoneshop.controller;
 
 import com.makara.phoneshop.baseApi.BaseApi;
 import com.makara.phoneshop.models.dto.ModelDTO;

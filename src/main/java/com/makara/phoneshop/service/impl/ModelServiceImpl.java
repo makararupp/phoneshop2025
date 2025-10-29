@@ -106,4 +106,9 @@ public class ModelServiceImpl implements ModelService {
     public List<Model> filterSpecification(String name) {
         return modelRepository.findByNameContainingIgnoreCase(name);
     }
+
+    @Override
+    public List<Model> getByBrand(Long brandId) {
+        return modelRepository.findByBrandId(brandId);
+    }
 }
