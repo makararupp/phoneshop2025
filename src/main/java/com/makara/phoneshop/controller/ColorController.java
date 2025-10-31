@@ -1,6 +1,7 @@
 package com.makara.phoneshop.controller;
 
 import com.makara.phoneshop.baseApi.BaseApi;
+import com.makara.phoneshop.models.dto.PageDTO;
 import com.makara.phoneshop.models.entities.Color;
 import com.makara.phoneshop.models.mapper.ColorMapper;
 import com.makara.phoneshop.models.request.ColorRequest;
@@ -10,8 +11,10 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +40,9 @@ public class ColorController {
                 .data(responseData)
                 .build();
     }
+
     @GetMapping("{id}")
-    public BaseApi<?> getByColorId(@PathVariable("id") Long colorId){
+    public BaseApi<?> getByColorId(@PathVariable("id") Long colorId) {
         Color color = colorService.getById(colorId);
         ColorResponse response = colorMapper.toDto(color);
         return BaseApi.builder()
@@ -49,8 +53,9 @@ public class ColorController {
                 .data(response)
                 .build();
     }
+
     @DeleteMapping("{id}")
-    public BaseApi<?> deleteColorId(@PathVariable Long id){
+    public BaseApi<?> deleteColorId(@PathVariable Long id) {
         Color color = colorService.deleteId(id);
         ColorResponse delete = colorMapper.toDto(color);
         return BaseApi.builder()
@@ -64,7 +69,7 @@ public class ColorController {
 
     @PutMapping("{id}")
     public BaseApi<?> updateColor(@Valid @PathVariable Long id,
-                                  @RequestBody ColorRequest request){
+            @RequestBody ColorRequest request) {
         Color color = colorMapper.toEntity(request);
         Color newColor = colorService.updateColor(id, color);
         ColorResponse response = colorMapper.toDto(newColor);
@@ -77,8 +82,9 @@ public class ColorController {
                 .data(response)
                 .build();
     }
+
     @GetMapping
-    public BaseApi<List<ColorResponse>> getAllColors(){
+    public BaseApi<List<ColorResponse>> getAllColors() {
         List<ColorResponse> colorResponse = colorService.listColors();
         return BaseApi.<List<ColorResponse>>builder()
                 .status(true)
@@ -88,15 +94,30 @@ public class ColorController {
                 .data(colorResponse)
                 .build();
     }
+
     @GetMapping("filter/{name}")
-    public BaseApi<?> filterName(@PathVariable("name") String name){
-       List<ColorResponse> responseName = colorService.findByName(name);
+    public BaseApi<?> filterName(@PathVariable("name") String name) {
+        List<ColorResponse> responseName = colorService.findByName(name);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("color filter by name has been found!")
                 .timestamp(LocalDateTime.now())
                 .data(responseName)
+                .build();
+    }
+
+    @GetMapping("/pagination")
+    public BaseApi<?> paginationColors(@RequestParam Map<String, String> params) {
+        Page<ColorResponse> page = colorService.getWithPagination(params);
+        PageDTO dto = new PageDTO(page);
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("specification pagination colors have been found!")
+                .timestamp(LocalDateTime.now())
+                .data(dto)
                 .build();
     }
 }

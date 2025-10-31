@@ -6,11 +6,17 @@ import com.makara.phoneshop.models.mapper.ColorMapper;
 import com.makara.phoneshop.models.response.ColorResponse;
 import com.makara.phoneshop.repository.ColorRepository;
 import com.makara.phoneshop.service.ColorService;
+import com.makara.phoneshop.utils.PageUtils;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,7 +35,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Color getById(Long id) {
         return colorRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(()-> new ResourceNotFountException("color",id));
+                .orElseThrow(() -> new ResourceNotFountException("color", id));
     }
 
     @Override
@@ -43,11 +49,11 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Color updateColor(Long id, Color newColor) {
         Color color = getById(id);
-        //Only update if new name is provided and different
-        if(newColor.getName() !=null && !newColor.getName().equals(color.getName())){
-            //check for duplicate
-            if(color.equals(color.getId())){
-                throw new RuntimeException("color name already exits"+ newColor.getName());
+        // Only update if new name is provided and different
+        if (newColor.getName() != null && !newColor.getName().equals(color.getName())) {
+            // check for duplicate
+            if (color.equals(color.getId())) {
+                throw new RuntimeException("color name already exits" + newColor.getName());
             }
             color.setName(newColor.getName());
         }
@@ -64,9 +70,30 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public List<ColorResponse> findByName(String name) {
-       Optional<Color> colors = colorRepository.findByNameIgnoreCase(name);
+        Optional<Color> colors = colorRepository.findByNameIgnoreCase(name);
         return colors.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<ColorResponse> getWithPagination(Map<String, String> params) {
+        int pageLimit = PageUtils.DEFAULT_PAGE_LIMIT;
+        // check page limit = 2
+        if (params.containsKey(PageUtils.PAGE_LIMIT)) {
+            pageLimit = Integer.parseInt(params.get(PageUtils.PAGE_LIMIT));
+        }
+
+        // chek page numbers;
+        int pageNumber = PageUtils.DEFAULT_PAGE_NUMBER;
+        if (params.containsKey(PageUtils.PAGE_NUMBER)) {
+            pageNumber = Integer.parseInt(params.get(PageUtils.PAGE_NUMBER));
+        }
+        Pageable pageable = PageUtils.getPageable(pageNumber,pageLimit);
+        Page<ColorResponse> page = colorRepository
+                .findAllByOrderByIdDesc(pageable)
+                .map(mapper::toDto);
+
+        return page;
     }
 }

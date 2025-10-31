@@ -125,7 +125,7 @@ public class BrandController {
     }
 
     @GetMapping("/nameFilter")
-    public BaseApi<?> getBrands(@Valid @RequestParam Map<String, String> params){
+    public BaseApi<?> getBrands(@RequestParam Map<String, String> params){
         Page<BrandDTO> page = brandService.getWithPagination(params);
         PageDTO pageDTO = new PageDTO(page);
         return BaseApi.builder().status(true)

@@ -29,7 +29,7 @@ public class ModelSpec implements Specification<Model> {
                     cb.lower(model.get("name")),
                     "%" +modelFilter.getName().toLowerCase() +"%"
             ));
-        }
+        }   
 
         // Integrate BrandSpec for brand-related filters
          if(modelFilter.getBrandId() !=null || modelFilter.getBrandName() !=null){
