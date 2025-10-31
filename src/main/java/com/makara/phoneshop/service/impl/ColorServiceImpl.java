@@ -6,12 +6,14 @@ import com.makara.phoneshop.models.mapper.ColorMapper;
 import com.makara.phoneshop.models.response.ColorResponse;
 import com.makara.phoneshop.repository.ColorRepository;
 import com.makara.phoneshop.service.ColorService;
+import com.makara.phoneshop.spec.ColorSpecification;
 import com.makara.phoneshop.utils.PageUtils;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,5 +97,29 @@ public class ColorServiceImpl implements ColorService {
                 .map(mapper::toDto);
 
         return page;
+    }
+
+    @Override
+    public Page<ColorResponse> getAllPagination(Map<String, String> params) {
+
+        int pageLimit = PageUtils.DEFAULT_PAGE_LIMIT;
+        if(params.containsKey(PageUtils.PAGE_LIMIT)){
+            pageLimit = Integer.parseInt(params.get(PageUtils.PAGE_LIMIT));
+        }
+
+        int pageNumber = PageUtils.DEFAULT_PAGE_NUMBER;
+        if(params.containsKey(PageUtils.PAGE_NUMBER)){
+            pageNumber = Integer.parseInt(params.get(PageUtils.PAGE_NUMBER));
+        }
+        Pageable pageable = PageUtils.getPageable(pageNumber,pageLimit);
+
+        // build specification
+        Specification<Color> specification = ColorSpecification.getCombinedSpec(params);
+
+        //build Query
+        Page<Color> page = colorRepository.findAll(specification, pageable);
+
+        return page.map(mapper::toDto);
+
     }
 }

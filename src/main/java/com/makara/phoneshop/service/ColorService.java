@@ -17,4 +17,5 @@ public interface ColorService {
     List<ColorResponse> listColors();
     List<ColorResponse> findByName(String name);
     Page<ColorResponse> getWithPagination(Map<String, String> params);
+    Page<ColorResponse> getAllPagination(Map<String, String> params);
 }

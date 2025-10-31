@@ -120,4 +120,16 @@ public class ColorController {
                 .data(dto)
                 .build();
     }
+    @GetMapping("specification")
+    public BaseApi<?> getAllPagination(@RequestParam Map<String, String> params){
+      Page<ColorResponse> list = colorService.getAllPagination(params);
+        PageDTO dto = new PageDTO(list);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("specification pagination colors have been found!")
+                .timestamp(LocalDateTime.now())
+                .data(dto)
+                .build();
+    }
 }

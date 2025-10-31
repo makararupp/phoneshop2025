@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 @Data
 public class BrandSpec implements Specification<Brand> {
+    
     private final BrandFilter brandFilter;
     List<Predicate> predicates = new ArrayList<>();
-
     @Override
     public  Predicate toPredicate(Root<Brand> brand,
                                   CriteriaQuery<?> query, CriteriaBuilder builder) {
