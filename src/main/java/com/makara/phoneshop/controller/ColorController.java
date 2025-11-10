@@ -129,7 +129,7 @@ public class ColorController {
                 .code(HttpStatus.OK.value())
                 .message("specification pagination colors have been found!")
                 .timestamp(LocalDateTime.now())
-                .data(dto)
+                .data(list)
                 .build();
     }
 }

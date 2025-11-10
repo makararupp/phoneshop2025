@@ -31,7 +31,8 @@ public class ColorSpecification {
         };
     }
     // Combine with other specs if needed (e.g., AND with another filter)
-    public static Specification<Color> getCombinedSpec(Map<String, String> name){
-        return Specification.where(filterByNameContainsIgnoreCase(name.toString()));
+    public static Specification<Color> getCombinedSpec(Map<String, String> params){
+        String name = params.get("name");
+        return Specification.where(filterByNameContainsIgnoreCase(name));
     }
 }
