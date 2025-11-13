@@ -21,13 +21,7 @@ server:
     port: 2000
 file:
     server-path: D:\\POS_Noted\\images\\
-#configure application with api document swagger ui version 3.0.6
-springdoc:
-    swagger-ui:
-        enabled: true                 # Enable Swagger UI
-        path: /swagger-ui             # Custom path (default: /swagger-ui.html)
-        displayOperationId: true      # Show operation IDs
-        displayRequestDuration: true  # Show request duration
+
 logging:
     level:
         org.springframework.security: DEBUG
