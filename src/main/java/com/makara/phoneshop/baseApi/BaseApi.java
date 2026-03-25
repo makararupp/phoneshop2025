@@ -10,7 +10,7 @@ public record BaseApi<T> (
         Boolean status,
         Integer code,
         String message,
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @JsonFormat(pattern = "yyyyMMdd HH:mm")
         LocalDateTime timestamp,
         T data
 ){
