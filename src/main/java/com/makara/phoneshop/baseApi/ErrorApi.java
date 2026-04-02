@@ -1,15 +1,19 @@
 package com.makara.phoneshop.baseApi;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 @Builder
-public record ErrorApi<T>(
-        Boolean status,
-        Integer code,
-        String message,
+public class ErrorApi<T> {
+        private Boolean status;
+        private Integer code;
+        private String message;
+
         @JsonFormat(pattern = "yyyyMMdd HH:mm")
-        LocalDateTime timestamp,
-        T errors
-) {
+        private LocalDateTime timestamp;
+
+        private T errors;
 }
