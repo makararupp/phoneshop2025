@@ -4,7 +4,6 @@ import com.makara.phoneshop.baseApi.BaseApi;
 import com.makara.phoneshop.models.entities.ExchangeRate;
 import com.makara.phoneshop.models.mapper.ExchangeRateMapper;
 import com.makara.phoneshop.models.request.ExchangeRateRequest;
-import com.makara.phoneshop.models.response.ExchangeRateResponse;
 import com.makara.phoneshop.service.ExchangeRateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("exchangeRates")
+@RequestMapping("exchange-rates")
 @RequiredArgsConstructor
 @Slf4j
 public class ExchangeRateController {
@@ -36,7 +35,9 @@ public class ExchangeRateController {
                 .code(HttpStatus.OK.value())
                 .message("Rate have been saved.")
                 .timestamp(LocalDateTime.now())
-                .data(saveData)
+                .data(null)
                 .build();
     }
+
+
 }
